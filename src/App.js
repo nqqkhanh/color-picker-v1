@@ -1,25 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import ColorPicker from './components/ColorPicker'
+import SizeSetting from './components/SizeSetting'
+import Result from './components/Result'
+import Reset from './components/Reset'
+
+import './App.css'
+
+export default class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      color: 'black',
+      fontSize: 22
+    }
+  }
+
+  onActive = (param) =>{
+    this.setState({
+    color : param
+    })
+  } 
+
+  onChangeSize = (value) =>{
+    this.setState({
+      fontSize: (this.state.fontSize + value >=8 && this.state.fontSize + value <= 52 )? this.state.fontSize + value : this.state.fontSize
+     })
+  }
+
+onReset = ()=>{
+    this.setState({
+      color: 'black',
+      fontSize: 22
+    })
 }
 
-export default App;
+  render() {
+    return (
+      <>
+      <div className="title">Color Picker App</div>
+      <div className="container">
+        <div className="top">
+            <div className="top-left">
+              <ColorPicker color={this.state.color} onActive={this.onActive}/>
+            </div>
+            <div className="top-right">
+            <SizeSetting fontSize={this.state.fontSize} onChangeSize={this.onChangeSize}/>
+            <Reset onReset={this.onReset}/>
+            </div>
+        </div>
+        <div className="bottom">
+          <Result fontSize={this.state.fontSize} color={this.state.color}/>
+        </div>
+      </div>
+      </>
+    )
+  }
+}
